@@ -1,0 +1,8 @@
+.profile-picture{
+    object-fit: cover;
+    border-radius: 50%;
+}
+.post-image{
+    border-radius: 10px;
+    object-fit: cover;
+}
