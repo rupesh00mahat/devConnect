@@ -6,6 +6,7 @@ import Login from "./auth/components/Login";
 import Feed from "./components/layout/Feed";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const theme = createTheme({
@@ -15,6 +16,7 @@ function App() {
   });
 
   return (
+   <>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
@@ -28,6 +30,8 @@ function App() {
         </BrowserRouter>
       </ThemeProvider>
     </Provider>
+    <ToastContainer/>
+   </>
   );
 }
 

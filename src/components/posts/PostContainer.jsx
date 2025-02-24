@@ -7,15 +7,15 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import CommentIcon from '@mui/icons-material/Comment';
 
-function PostContainer() {
+function PostContainer({text, image=null}) {
   return (
-    <FeedContainer extraCSS={{ display: "flex", gap: "30px", mt: 2 }}>
-      <img
+    <FeedContainer extraCSS={{ display: "flex", gap: "30px"}}>
+      {image && <img
         className="profile-picture"
         src={ProfileImage}
         height={"50px"}
         width={"50px"}
-      />
+      />}
       <Box
         sx={{
           width: "100%",
@@ -43,7 +43,7 @@ function PostContainer() {
           2 hours ago
         </Typography>
         <Typography variant="p" sx={{ marginBottom: "10px", fontSize: '18px' }}>
-          Sole Mates: Ralph Suguitan and the Nike KD 4 "Easter"
+          {text}
         </Typography>
         <img
           className="post-image"

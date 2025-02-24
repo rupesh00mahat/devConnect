@@ -1,6 +1,8 @@
-import { setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { signInWithGoogle } from "../../auth/auth";
 import { initiateData, storeUserValue } from "../actions";
+import { db } from "../../configuration/firebase";
+import { toast } from "react-toastify";
 
 export const handleSignIn = () => {
   return async (dispatch) => {
@@ -8,9 +10,11 @@ export const handleSignIn = () => {
     let user = await signInWithGoogle();
     console.log("user", user);
     dispatch(storeUserValue({ email: user.email, uid: user.uid }));
+    await dispatch(checkifUserExists(user));
     return user.uid
    }
    catch(e){
+    console.log('Entered here');
     console.log('error', e.message);
     return null;
    }
@@ -20,8 +24,10 @@ export const handleSignIn = () => {
 
 export const checkifUserExists = (user) => {
   return async (dispatch) => {
+
     try {
       const userDocRef = doc(db, "users", user.uid);
+
       const userDocSnap = await getDoc(userDocRef);
       if (!userDocSnap.exists()) {
         await setDoc(userDocRef, {
@@ -35,6 +41,8 @@ export const checkifUserExists = (user) => {
           comments: [],
           posts: [],
         });
+        toast.success('New user Initiated');
+        toast.success('Welcome To Devconnect');
         dispatch(
           initiateData({ email: user.email, uid: user.uid, firstName: "", following: [] })
         );

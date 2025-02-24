@@ -1,4 +1,5 @@
 import {
+  ADD_TO_FEED,
   COMMENT_POST,
   CREATE_POST,
   INITIATE_DATA,
@@ -45,3 +46,7 @@ export const replyToComment = (value) => ({
   type: REPLY_TO_COMMENT,
   payload: value,
 });
+export const addToFeed = (value) => ({
+  type: ADD_TO_FEED,
+  payload: value
+})
