@@ -7,3 +7,4 @@ export const COMMENT_POST = "COMMENT_POST";
 export const SHARE_POST = "SHARE_POST";
 export const REPLY_TO_COMMENT = "REPLY_TO_COMMENT";
 export const ADD_TO_FEED = 'ADD_TO_FEED';
+export const SET_EXPLORE_USERS = 'SET_EXPLORE_USERS';

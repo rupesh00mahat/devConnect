@@ -32,13 +32,14 @@ console.log('feedPosts', feedPosts);
             loading="lazy"
           />
           <TextField
+          color="white"
             inputRef={newPostRef}
             sx={{
               width: "100%",
               bgcolor: "#28353E",
               borderRadius: 2,
-              color: "white !important",
             }}
+            inputProps={{style: {color: 'white'}}}
             multiline
           />
         </Box>

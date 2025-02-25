@@ -1,8 +1,10 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { signInWithGoogle } from "../../auth/auth";
 import { initiateData, storeUserValue } from "../actions";
-import { db } from "../../configuration/firebase";
+import { auth, db } from "../../configuration/firebase";
 import { toast } from "react-toastify";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import {fetchAllUsers} from './newUserThunk.js';
 
 export const handleSignIn = () => {
   return async (dispatch) => {
@@ -21,6 +23,25 @@ export const handleSignIn = () => {
     
   };
 };
+
+export const handleSignInManual = (username, password) => {
+  return async (dispatch) => {
+    try{
+    let uid =   await signInWithEmailAndPassword(auth, username, password).then( async(userCredentials)=>{
+        dispatch(storeUserValue({email: userCredentials.user.email, uid: userCredentials.user.uid}))
+        dispatch(fetchAllUsers(userCredentials.user.uid, userCredentials.user.following));
+
+        toast.success('User Logged In successfully !!!!')
+        console.log('uc',userCredentials.user.uid);
+        return userCredentials.user.uid;
+      })
+      return uid;
+    }catch(e) {
+      toast.error('Errror!! Could not log In');
+      console.log(e.message);
+    }
+  }
+}
 
 export const checkifUserExists = (user) => {
   return async (dispatch) => {

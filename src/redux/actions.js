@@ -6,6 +6,7 @@ import {
   LIKE_POST,
   LOAD_FEED,
   REPLY_TO_COMMENT,
+  SET_EXPLORE_USERS,
   SHARE_POST,
   STORE_USER_VALUE,
 } from "./actionTypes";
@@ -49,4 +50,8 @@ export const replyToComment = (value) => ({
 export const addToFeed = (value) => ({
   type: ADD_TO_FEED,
   payload: value
+})
+export const setExploreUsers = (value) => ({
+  type: SET_EXPLORE_USERS,
+  payload: value,
 })

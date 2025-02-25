@@ -7,15 +7,16 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import CommentIcon from '@mui/icons-material/Comment';
 
-function PostContainer({text, image=null}) {
+function PostContainer({text, image=null}, props) {
+  console.log('props', image);
   return (
     <FeedContainer extraCSS={{ display: "flex", gap: "30px"}}>
-      {image && <img
+      <img
         className="profile-picture"
         src={ProfileImage}
         height={"50px"}
         width={"50px"}
-      />}
+      />
       <Box
         sx={{
           width: "100%",
@@ -45,12 +46,12 @@ function PostContainer({text, image=null}) {
         <Typography variant="p" sx={{ marginBottom: "10px", fontSize: '18px' }}>
           {text}
         </Typography>
-        <img
+        {image && <img
           className="post-image"
           src={ProfileImage}
           width={"100%"}
           height={"450px"}
-        />
+        />}
          <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', marginTop: '20px'}}>
         <ButtonOne icon={<FavoriteIcon size={20} />} text={"Like"} />
         <ButtonOne icon={<AllInclusiveIcon size={20} />} text={"Retweet"} />

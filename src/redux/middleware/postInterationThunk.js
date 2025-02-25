@@ -9,7 +9,7 @@ export const createNewPost = (text, uid) => {
             console.log('text and uid', text, uid);
             const userDocRef = doc(db, 'users', uid);
             await updateDoc(userDocRef, {
-                posts: arrayUnion({text, photo: '', likes: [], comments:[]})
+                posts: arrayUnion({text, photo: '', likes: [], comments:[], data: new Date()})
             }).then(()=>{
                     dispatch(fetchPosts(uid))
             }) 
