@@ -5,5 +5,6 @@ export const initialState = {
     followers: [],
     email: '',
     userName: '',
-    exploreUsers: []
+    exploreUsers: [],
+    notifications: [],
   };

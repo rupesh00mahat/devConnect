@@ -7,7 +7,6 @@ import {
   handleSignInManual,
 } from "../../redux/middleware/authThunk";
 import { toast } from "react-toastify";
-import { fetchPosts } from "../../redux/middleware/postInterationThunk";
 import { Controller, useForm } from "react-hook-form";
 function Login() {
   const dispatch = useDispatch();
@@ -21,44 +20,46 @@ function Login() {
     formState: { errors },
   } = useForm({ defaultValues: { userName: "", password: "" } });
 
-  useEffect(() => {
-    console.log("hello");
-  }, []);
+  useEffect(() => {}, []);
 
   const handleLogin = async () => {
     const returnedId = await dispatch(handleSignIn());
 
     if (returnedId) {
       toast.success("User successfully Logged In");
-      await dispatch(fetchPosts(returnedId));
       navigate("/feed");
     }
   };
 
   const handleLoginManual = async (data) => {
-    console.log(data);
     const returnedId = await dispatch(
       handleSignInManual(data.userName, data.password)
     );
     if (returnedId) {
-      console.log(returnedId);
-      await dispatch(fetchPosts(returnedId));
       navigate("/feed");
     }
   };
 
   return (
     <>
-      <Box sx={ {mt: 15,mb: 5, width: '100%', display: 'flex', justifyContent: 'center'}}>
+      <Box
+        sx={{
+          mt: 15,
+          mb: 5,
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <form
           style={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: 'center',
-            alignItems: 'center',
-            maxwidth: '50%',
-            width: '50%',
-            textAlign: 'center'
+            justifyContent: "center",
+            alignItems: "center",
+            maxwidth: "50%",
+            width: "50%",
+            textAlign: "center",
           }}
           onSubmit={handleSubmit(handleLoginManual)}
         >
@@ -68,8 +69,8 @@ function Login() {
             rules={{ required: "This field is required" }}
             render={({ field }) => (
               <TextField
-              fullWidth
-              sx={{mb: 2}}
+                fullWidth
+                sx={{ mb: 2 }}
                 {...field}
                 label="User Name"
                 variant="outlined"
@@ -86,7 +87,7 @@ function Login() {
               <TextField
                 {...field}
                 fullWidth
-                sx={{mb: 2}}
+                sx={{ mb: 2 }}
                 label="Password"
                 type="password"
                 variant="outlined"
@@ -95,7 +96,9 @@ function Login() {
               />
             )}
           />
-          <Button fullWidth variant="contained" sx={{p: 2}} type="submit">Log In</Button>
+          <Button fullWidth variant="contained" sx={{ p: 2 }} type="submit">
+            Log In
+          </Button>
         </form>
       </Box>
       <Box
@@ -105,7 +108,7 @@ function Login() {
           alignItems: "center",
         }}
       >
-        <Button variant="contained" sx={{p:2}} onClick={handleLogin}>
+        <Button variant="contained" sx={{ p: 2 }} onClick={handleLogin}>
           Login With Email
         </Button>
       </Box>
