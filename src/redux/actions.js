@@ -5,6 +5,7 @@ import {
   INITIATE_DATA,
   LIKE_POST,
   LOAD_FEED,
+  REMOVE_NOTIFICATIONS,
   REPLY_TO_COMMENT,
   SET_EXPLORE_USERS,
   SHARE_POST,
@@ -54,4 +55,7 @@ export const addToFeed = (value) => ({
 export const setExploreUsers = (value) => ({
   type: SET_EXPLORE_USERS,
   payload: value,
+})
+export const emptyNotifications = (value) => ({
+  type: REMOVE_NOTIFICATIONS,
 })

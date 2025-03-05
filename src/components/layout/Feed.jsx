@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../assets/css/feed.css";
 import FeedContainer from "../common/FeedContainer";
 import ProfileImage from "../../assets/images/demo-profile.jpg";
@@ -20,6 +20,13 @@ function Feed() {
   const feedPosts = useSelector((state) => state.feedPosts);
   const email = useSelector((state) => state.email);
   const userName = useSelector((state) => state.userName);
+
+  const [postsToShow, setPostsToShow] = useState(feedPosts);
+
+  useEffect(()=>{
+    setPostsToShow(feedPosts);
+  }, [feedPosts])
+
   return (
     <>
       <Grid container spacing={20}>
@@ -80,8 +87,8 @@ function Feed() {
               />
             </Box>
           </FeedContainer>
-          {feedPosts &&
-            feedPosts.map(({ text, postId, fullName, likes, email, date, comments, posterId }, index) => {
+          {postsToShow &&
+            postsToShow.map(({ text, postId, fullName, likes, email, date, comments, posterId }, index) => {
               return <PostContainer key={`${text}-${index}`} text={text}
               postId={postId}
               fullName={fullName}
@@ -91,6 +98,8 @@ function Feed() {
               comment={comments}
               userId={uid}
               posterId={posterId}
+              setPostsToShow={setPostsToShow}
+              postsToShow={postsToShow}
               />;
             })}
         </Grid>

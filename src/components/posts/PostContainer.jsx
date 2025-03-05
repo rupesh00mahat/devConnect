@@ -1,19 +1,23 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FeedContainer from "../common/FeedContainer";
 import ProfileImage from "../../assets/images/demo-profile.jpg";
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, IconButton, TextField, Typography } from "@mui/material";
 import ButtonOne from "../common/ButtonOne";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import CommentIcon from "@mui/icons-material/Comment";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   likePost,
   commentPost,
+  removeLike,
+  deleteComment,
+  deletePost,
 } from "../../redux/middleware/postInterationThunk";
 import { toast } from "react-toastify";
 import ButtonTwo from "../common/ButtonTwo";
 import { v4 as uuidv4 } from "uuid";
+import { Delete } from "@mui/icons-material";
 
 function PostContainer({
   text,
@@ -26,25 +30,34 @@ function PostContainer({
   comment,
   userId,
   posterId,
+  postsToShow, setPostsToShow
 }) {
   const dispatch = useDispatch();
   const newCommentRef = useRef(null);
   const [comments, showComments] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-  
+  const [commentList, setCommentList] = useState(comment);
+  const [isLiked, setIsLiked] = useState(likes.includes(userId));
+  const userEmail = useSelector((state) => state.email);
+  const uid = useSelector((state) => state.uid);
+  const removeComment = (commentId) => {
+    dispatch(deleteComment(userId, postId, posterId, commentId));
+    const newCommentList = commentList.filter(
+      (comment) => comment.commentId !== commentId
+    );
+    setCommentList(newCommentList);
+  };
+
   const handleLike = () => {
-   if(!isLiked){
-    if (likes.includes(userId)) {
+    if (isLiked) {
       toast.success(
         "Already Liked !!!!!. You cannot like the post again or unlike it."
       );
+      dispatch(removeLike(userId, postId, posterId));
+      setIsLiked(false);
     } else {
       dispatch(likePost(userId, postId, posterId));
+      setIsLiked(true);
     }
-   }
-
-    setIsLiked(true);
-
   };
 
   const addComment = () => {
@@ -56,11 +69,18 @@ function PostContainer({
         posterId,
         newCommentRef.current.value,
         new Date(),
-        newid
+        newid,
+        userEmail
       )
     );
     newCommentRef.current.value = "";
   };
+
+  const removePost = () => {
+      dispatch(deletePost(postId, uid))
+      let newPosts = postsToShow.filter((post)=> post.postId !== postId);
+      setPostsToShow(newPosts);
+  }
 
   return (
     <FeedContainer
@@ -121,35 +141,62 @@ function PostContainer({
           <ButtonOne
             onClick={handleLike}
             icon={
-              <FavoriteIcon
-                color={`${likes.includes(userId) || isLiked ? "secondary" : ""}`}
-                size={20}
-              />
+              <FavoriteIcon color={`${isLiked ? "secondary" : ""}`} size={20} />
             }
-            text={`(${isLiked ? likes.length+1 : likes.length}) ${
-              likes.includes(userId) || isLiked ? "Liked" : "Like"
-            }`}
+            text={`(${
+              isLiked
+                ? likes.includes(userId)
+                  ? likes.length
+                  : likes.length + 1
+                : likes.includes(userId)
+                ? likes.length - 1
+                : likes.length
+            }) ${isLiked ? "Liked" : "Like"}`}
           />
-          <ButtonOne icon={<AllInclusiveIcon size={20} />} text={"Retweet"} />
           <ButtonOne
-          onClick={()=>{showComments(prevState => !prevState)}}
+            onClick={() => {
+              showComments((prevState) => !prevState);
+            }}
             icon={<CommentIcon size={20} />}
-            text={`(${comment.length}) Comment`}
+            text={`(${commentList.length}) Comment`}
           />
+          {posterId == uid && (
+            <ButtonOne
+              onClick={removePost}
+              icon={<Delete color="error" size={20} />}
+              text={"Delete Post"}
+            />
+          )}
         </Box>
-        {comments && comment &&
-          comment.map(({ comment, commentId }) => {
+        {comments &&
+          commentList &&
+          commentList.map(({ comment, commentId, posterEmail }) => {
             return (
               <Box
-              key={`${commentId}`}
-              sx={{p: 1, borderRadius: 2, border: '1px solid white', mt:2}}
+                key={`${commentId}`}
+                sx={{
+                  p: 1,
+                  borderRadius: 2,
+                  border: "1px solid white",
+                  mt: 2,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
               >
-                <Typography variant="h4" fontSize={"20px"} fontWeight={400}>
-                  Comment
-                </Typography>
-                <Typography variant="p" fontSize={"16px"} fontWeight={200}>
-                  {comment}
-                </Typography>
+                <Box>
+                  <Typography variant="h4" fontSize={"20px"} fontWeight={400}>
+                    @{posterEmail}
+                  </Typography>
+                  <Typography variant="p" fontSize={"16px"} fontWeight={200}>
+                    {comment}
+                  </Typography>
+                </Box>
+                {posterEmail == userEmail && (
+                  <IconButton onClick={() => removeComment(commentId)}>
+                    <Delete color="error" />
+                  </IconButton>
+                )}
               </Box>
             );
           })}

@@ -1,6 +1,7 @@
 import {
   ADD_TO_FEED,
   INITIATE_DATA,
+  REMOVE_NOTIFICATIONS,
   SET_EXPLORE_USERS,
   STORE_USER_VALUE,
 } from "./actionTypes";
@@ -17,7 +18,7 @@ export default function devConnectReducer(state = initialState, action) {
       uid: action.payload.uid,
       following: action.payload.following,
       userName: action.payload.userName,
-      
+      notifications: action.payload.notifications
     };
   } else if (action.type == ADD_TO_FEED) {
 
@@ -25,6 +26,8 @@ export default function devConnectReducer(state = initialState, action) {
   } else if (action.type == SET_EXPLORE_USERS) {
 
     return { ...state, exploreUsers: action.payload };
+  }else if (action.type == REMOVE_NOTIFICATIONS){
+    return {...state, notifications: []}
   }
 
   return state;

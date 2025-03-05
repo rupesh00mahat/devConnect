@@ -72,7 +72,7 @@ export const checkifUserExists = (user) => {
           initiateData({...data, userName: user.displayName}));
         return { email: user.email, uid: user.uid, firstName: "", following: [] };
       } else {
-        const data = {following: userDocSnap.data()?.following, email: userDocSnap.data().email, uid: userDocSnap.data().uid, userName: userDocSnap.data()?.firstName + " "+ userDocSnap.data()?.lastName, notifications: userDocSnap.data()?.notification}
+        const data = {following: userDocSnap.data()?.following, email: userDocSnap.data().email, uid: userDocSnap.data().uid, userName: userDocSnap.data()?.firstName + " "+ userDocSnap.data()?.lastName, notifications: userDocSnap.data()?.notification};
         dispatch(initiateData(data))
         return data;
       }
