@@ -18,6 +18,7 @@ export const createNewPost = (text, uid, email, fullName, postId) => {
           postId, posterId: uid
         }),
       })
+      
       toast.success("Post created successfully");
     } catch (e) {
       toast.error("Error:", e.message);

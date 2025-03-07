@@ -10,10 +10,10 @@ import { AddPhotoAlternate } from "@mui/icons-material";
 import ButtonTwo from "../common/ButtonTwo";
 import FollowSuggestions from "../../layouts/FollowSuggestions/FollowSuggestions";
 import { v4 as uuidv4 } from "uuid";
+import Sidebar from "../../layouts/Sidebar";
 
 function Feed() {
   const newPostRef = useRef(null);
- 
 
   const dispatch = useDispatch();
   const uid = useSelector((state) => state.uid);
@@ -23,14 +23,17 @@ function Feed() {
 
   const [postsToShow, setPostsToShow] = useState(feedPosts);
 
-  useEffect(()=>{
+  useEffect(() => {
     setPostsToShow(feedPosts);
-  }, [feedPosts])
+  }, [feedPosts]);
 
   return (
     <>
       <Grid container spacing={20}>
-        <Grid item xs={8}>
+        <Grid item xs={2}>
+          <Sidebar/>
+        </Grid>
+        <Grid item xs={6}>
           <FeedContainer>
             <Box sx={{ width: "100%", display: "flex", gap: "30px" }}>
               <img
@@ -88,20 +91,38 @@ function Feed() {
             </Box>
           </FeedContainer>
           {postsToShow &&
-            postsToShow.map(({ text, postId, fullName, likes, email, date, comments, posterId }, index) => {
-              return <PostContainer key={`${text}-${index}`} text={text}
-              postId={postId}
-              fullName={fullName}
-              likes={likes}
-              email={email}
-              date={date}
-              comment={comments}
-              userId={uid}
-              posterId={posterId}
-              setPostsToShow={setPostsToShow}
-              postsToShow={postsToShow}
-              />;
-            })}
+            postsToShow.map(
+              (
+                {
+                  text,
+                  postId,
+                  fullName,
+                  likes,
+                  email,
+                  date,
+                  comments,
+                  posterId,
+                },
+                index
+              ) => {
+                return (
+                  <PostContainer
+                    key={`${text}-${index}`}
+                    text={text}
+                    postId={postId}
+                    fullName={fullName}
+                    likes={likes}
+                    email={email}
+                    date={date}
+                    comment={comments}
+                    userId={uid}
+                    posterId={posterId}
+                    setPostsToShow={setPostsToShow}
+                    postsToShow={postsToShow}
+                  />
+                );
+              }
+            )}
         </Grid>
         <Grid item xs={4} sx={{ pl: "10px !important" }}>
           <FollowSuggestions />
